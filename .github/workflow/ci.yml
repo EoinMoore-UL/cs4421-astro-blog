@@ -3,6 +3,9 @@ name: Continuous Integration
 on:
   pull_request:
     branches: [ main ]
+on:
+  pull_request:
+    branches: [main]
 
 jobs:
   validate:
@@ -15,6 +18,13 @@ jobs:
         with:
           node-version: 24
           cache: 'npm'
+
+      - name: Setup Node.js Runtime
+        uses: actions/setup-node@v4
+        with:    
+          node-version: 24
+          cache: 'npm' # Caches node_modules for high-speed runs
+
       - name: Install Project Dependencies
         run: npm ci # Clean, deterministic install from package-lock.json
 
