@@ -3,3 +3,4 @@
 
 export const SITE_TITLE = 'Astro DnD';
 export const SITE_DESCRIPTION = 'Welcome to my website!';
+export const SLOGAN = "DND Baby!";
