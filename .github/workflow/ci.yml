@@ -1,4 +1,8 @@
 name: Continuous Integration
+
+on:
+  pull_request:
+    branches: [ main ]
 on:
   pull_request:
     branches: [main]
@@ -9,6 +13,11 @@ jobs:
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
+      - name: Setup Node.js Runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'npm'
 
       - name: Setup Node.js Runtime
         uses: actions/setup-node@v4
