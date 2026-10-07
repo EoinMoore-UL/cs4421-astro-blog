@@ -1,10 +1,10 @@
 ---
-name: 'Astro Author'
+name: 'Eóin William Hugh Moore'
 avatar: '../../assets/blog-placeholder-about.jpg'
-bio: 'A curious writer exploring the web, one thoughtful post at a time.'
+bio: 'Certified ok-looking man.'
 socials:
   - label: 'GitHub'
     url: 'https://github.com/withastro'
-  - label: 'Astro'
-    url: 'https://astro.build'
+  # - label: 'Astro'
+  #   url: 'https://astro.build'
 ---
