@@ -19,8 +19,12 @@ jobs:
       - name: Install Project Dependencies
         run: npm ci # Clean, deterministic install from package-lock.json
 
+      - name: Install CDK Dependencies
+        working-directory: ./cdk
+        run: npm ci
+
       - name: Run Static Analysis & Tests
         run: |
           npm run lint
           # npm run check
-          # npm run test:unit
+          npm run test:unit
