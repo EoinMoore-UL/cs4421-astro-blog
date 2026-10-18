@@ -1,5 +1,5 @@
 ---
-name: 'Astro Author'
+name: 'Eóin Moore'
 avatar: '../../assets/blog-placeholder-about.jpg'
 bio: 'A Very Poor Game Developer.'
 socials:
