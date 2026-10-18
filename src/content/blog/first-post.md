@@ -1,10 +1,21 @@
 ---
-title: 'First post'
-description: 'Lorem ipsum dolor sit amet'
-pubDate: 'Jul 08 2022'
+title: 'TWAG'
+description: 'Tree With A Gun'
+pubDate: 'Oct 18 2026'
 heroImage: '../../assets/blog-placeholder-3.jpg'
-author: 'astro-author'
+author: 'eóin'
 ---
+
+<div style="width: 100vw; margin-left: calc(50% - 50vw); display: flex; justify-content: center;">
+	<iframe
+		frameborder="0"
+		src="https://itch.io/embed-upload/19832370?color=333333"
+		allowfullscreen=""
+		width="1280"
+		height="760"
+		style="width: min(1280px, calc(100vw - 2rem)); height: auto; aspect-ratio: 1280 / 760;"
+	></iframe>
+</div>
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
 
