@@ -1,9 +1,9 @@
 ---
-title: 'First post'
-description: 'Lorem ipsum dolor sit amet'
-pubDate: 'Jul 08 2022'
+title: 'TWAG'
+description: 'Tree With A Gun'
+pubDate: 'Oct 18 2026'
 heroImage: '../../assets/blog-placeholder-3.jpg'
-author: 'astro-author'
+author: 'eoin'
 ---
 
 <div style="width: 100vw; margin-left: calc(50% - 50vw); display: flex; justify-content: center;">
