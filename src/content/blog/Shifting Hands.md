@@ -2,7 +2,7 @@
 title: 'Shifting Hands'
 description: 'Card Game'
 pubDate: 'Sep 10 2001'
-heroImage: '../../assets/TWAG.jpg'
+heroImage: '../../assets/shifing-hands.jpg'
 author: 'eóin'
 ---
 
