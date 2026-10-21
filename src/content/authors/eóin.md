@@ -1,6 +1,6 @@
 ---
 name: 'Eóin Moore'
-avatar: '../../assets/blog-placeholder-about.jpg'
+avatar: '../../assets/eóin.jpg'
 bio: 'A Very Poor Game Developer, both in Skill and Finance.'
 socials:
   - label: 'GitHub'
