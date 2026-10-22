@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npm --prefix cdk ci && npm --prefix cdk test:unit # 1. Quality Gate
+      - run: npm --prefix cdk ci && npm --prefix cdk test # 1. Quality Gate
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
