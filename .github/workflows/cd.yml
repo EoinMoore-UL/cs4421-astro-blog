@@ -31,5 +31,5 @@ jobs:
           #  --region us-east-1 \
           #  --query 'Stacks[0].Outputs[?OutputKey==`RepositoryUri`].OutputValue' \
           #  --output text)
-           docker build -t $ECR_REGISTRY:$IMAGE_TAG .
-           docker push $ECR_REGISTRY:$IMAGE_TAG
+           docker build -t $ECR_REGISTRY/ecrstack-astrorepository95765926-ijzk0emgabat:$IMAGE_TAG .
+           docker push $ECR_REGISTRY/ecrstack-astrorepository95765926-ijzk0emgabat:$IMAGE_TAG
