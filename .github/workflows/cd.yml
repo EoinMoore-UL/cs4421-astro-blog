@@ -1,6 +1,6 @@
 name: Deploy Container to AWS
 on:
-  pull_request:
+  push:
     branches: [main]
 
 jobs:
@@ -26,10 +26,5 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          #  REPOSITORY_URI=$(aws cloudformation describe-stacks \
-          #  --stack-name EcrStack \
-          #  --region us-east-1 \
-          #  --query 'Stacks[0].Outputs[?OutputKey==`RepositoryUri`].OutputValue' \
-          #  --output text)
            docker build -t $ECR_REGISTRY/ecrstack-astrorepository95765926-ijzk0emgabat:$IMAGE_TAG .
            docker push $ECR_REGISTRY/ecrstack-astrorepository95765926-ijzk0emgabat:$IMAGE_TAG
