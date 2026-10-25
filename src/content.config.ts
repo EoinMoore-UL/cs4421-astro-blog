@@ -15,6 +15,7 @@ const blog = defineCollection({
 			updatedDate: z.coerce.date().optional(),
 			heroImage: z.optional(image()),
 			author: z.string().optional(),
+			music: z.string().optional(),
 		}),
 });
 
@@ -28,6 +29,7 @@ const devlogs = defineCollection({
 			updatedDate: z.coerce.date().optional(),
 			heroImage: z.optional(image()),
 			author: z.string().optional(),
+			music: z.string().optional(),
 		}),
 });
 
