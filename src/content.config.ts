@@ -18,6 +18,19 @@ const blog = defineCollection({
 		}),
 });
 
+const devlogs = defineCollection({
+	loader: glob({ base: './src/content/devlogs', pattern: '**/*.{md,mdx}' }),
+	schema: ({ image }) =>
+		z.object({
+			title: z.string(),
+			description: z.string(),
+			pubDate: z.coerce.date(),
+			updatedDate: z.coerce.date().optional(),
+			heroImage: z.optional(image()),
+			author: z.string().optional(),
+		}),
+});
+
 const authors = defineCollection({
 	loader: glob({ base: './src/content/authors', pattern: '**/*.{md,mdx}' }),
 	schema: ({ image }) =>
@@ -34,4 +47,4 @@ const authors = defineCollection({
 		}),
 });
 
-export const collections = { blog, authors };
+export const collections = { blog, devlogs, authors };
