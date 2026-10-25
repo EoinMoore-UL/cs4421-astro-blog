@@ -1,0 +1,172 @@
+---
+interface Props {
+	music: string;
+}
+
+const { music } = Astro.props;
+const tracks = import.meta.glob<string>('../assets/music/*', {
+	eager: true,
+	query: '?url',
+	import: 'default',
+});
+const track = Object.entries(tracks).find(([path]) => path.split('/').at(-1) === music)?.[1];
+
+if (!track) {
+	throw new Error(`Music track "${music}" was not found in src/assets/music.`);
+}
+---
+
+<section class="music-player" aria-label="Game soundtrack">
+	<p>Listen while you read: <strong>{music}</strong></p>
+	<canvas class="amplitude-visual" aria-label="Live audio amplitude bars"></canvas>
+	<audio controls preload="metadata" aria-label={`${music} soundtrack`}>
+		<source src={track} />
+		Your browser does not support audio playback.
+	</audio>
+</section>
+
+<script>
+	document.querySelectorAll('.music-player').forEach((player) => {
+		const audio = player.querySelector('audio');
+		const canvas = player.querySelector('canvas');
+		const context = canvas?.getContext('2d');
+
+		if (!(audio instanceof HTMLAudioElement) || !(canvas instanceof HTMLCanvasElement) || !context) {
+			return;
+		}
+
+		let audioContext: AudioContext | undefined;
+		let analyser: AnalyserNode | undefined;
+		let animationFrame = 0;
+		let hasPlayed = false;
+		const barCount = 48;
+		const barProfiles = Array.from({ length: barCount / 2 }, () => ({
+			gain: 0.8 + Math.random() * 0.5,
+			curve: 0.85 + Math.random() * 0.3,
+		}));
+
+		const renderBars = (energies: number[]) => {
+			const bounds = canvas.getBoundingClientRect();
+			const pixelRatio = window.devicePixelRatio || 1;
+			const width = bounds.width;
+			const height = bounds.height;
+			const pixelWidth = Math.round(width * pixelRatio);
+			const pixelHeight = Math.round(height * pixelRatio);
+			if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
+				canvas.width = pixelWidth;
+				canvas.height = pixelHeight;
+			}
+			context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+			context.clearRect(0, 0, width, height);
+			context.fillStyle = getComputedStyle(canvas).getPropertyValue('--accent').trim();
+			const gap = 3;
+			const barWidth = (width - gap * (barCount - 1)) / barCount;
+
+			for (let bar = 0; bar < barCount; bar += 1) {
+				const profile = barProfiles[Math.min(bar, barCount - 1 - bar)];
+				const responsiveEnergy = Math.pow(energies[bar], profile.curve) * profile.gain;
+				const barHeight = Math.max(3, Math.min(1, responsiveEnergy) * height);
+				const x = bar * (barWidth + gap);
+				context.fillRect(x, (height - barHeight) / 2, barWidth, barHeight);
+			}
+		};
+
+		const preview = Array.from({ length: barCount }, () => 0);
+		renderBars(preview);
+		window.addEventListener('resize', () => {
+			if (!hasPlayed) {
+				renderBars(preview);
+			}
+		});
+
+		const stopDrawing = () => {
+			cancelAnimationFrame(animationFrame);
+			animationFrame = 0;
+		};
+
+		const startDrawing = (analyser: AnalyserNode) => {
+			const frequencies = new Uint8Array(analyser.frequencyBinCount);
+			const draw = () => {
+				if (audio.paused || audio.ended) {
+					stopDrawing();
+					return;
+				}
+
+				analyser.getByteFrequencyData(frequencies);
+				const energies = [];
+
+				for (let bar = 0; bar < barCount; bar += 1) {
+					const distanceFromCenter = Math.abs((bar + 0.5) / barCount - 0.5) * 2;
+					const start = Math.floor(distanceFromCenter ** 2 * frequencies.length);
+					const end = Math.max(
+						start + 1,
+						Math.floor(Math.min(1, distanceFromCenter + 1 / barCount) ** 2 * frequencies.length),
+					);
+					let amplitude = 0;
+					for (let bin = start; bin < end; bin += 1) {
+						amplitude += frequencies[bin];
+					}
+					amplitude /= end - start;
+					energies.push(amplitude / 255);
+				}
+
+				renderBars(energies);
+				animationFrame = requestAnimationFrame(draw);
+			};
+
+			stopDrawing();
+			draw();
+		};
+
+		audio.addEventListener('play', async () => {
+			hasPlayed = true;
+			try {
+				if (!audioContext) {
+					audioContext = new AudioContext();
+					const source = audioContext.createMediaElementSource(audio);
+					analyser = audioContext.createAnalyser();
+					analyser.fftSize = 2048;
+					source.connect(analyser);
+					analyser.connect(audioContext.destination);
+				}
+
+				await audioContext.resume();
+				if (analyser) {
+					startDrawing(analyser);
+				}
+			} catch (error) {
+				stopDrawing();
+				console.error('Unable to start audio visualization.', error);
+			}
+		});
+
+		audio.addEventListener('pause', stopDrawing);
+		audio.addEventListener('ended', stopDrawing);
+	});
+</script>
+
+<style>
+	.music-player {
+		margin: 0 0 2em;
+		padding: 1em;
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 8px;
+		background: rgb(var(--gray-light), 0.25);
+	}
+
+	.music-player p {
+		margin: 0 0 0.5em;
+	}
+
+	audio {
+		display: block;
+		width: 100%;
+	}
+
+	.amplitude-visual {
+		display: block;
+		width: 100%;
+		height: 4.5rem;
+		margin-top: 0.75em;
+	}
+</style>
