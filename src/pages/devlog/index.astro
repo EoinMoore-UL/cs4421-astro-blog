@@ -1,0 +1,269 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+
+const posts = (await getCollection('devlogs')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const authors = await getCollection('authors');
+const dateLabel = (date: Date) =>
+	date.toLocaleDateString('en-us', {
+		year: 'numeric',
+		month: 'short',
+		day: 'numeric',
+	});
+const firstDevlogYear = posts.at(-1)?.data.pubDate.getFullYear();
+const currentDate = new Date();
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			main {
+				width: 960px;
+				max-width: calc(100% - 2em);
+				box-sizing: border-box;
+				margin-left: max(calc((100% - 960px) / 2 - 3rem), 0px);
+				margin-right: auto;
+			}
+			.intro {
+				margin-bottom: 2rem;
+			}
+			.intro h1 {
+				margin-bottom: 0.5rem;
+			}
+			.intro p {
+				margin: 0;
+				color: rgb(var(--gray));
+			}
+			.intro hr {
+				margin: 1.5rem 0 0;
+				border: 0;
+				border-top: 1px solid rgb(var(--gray-light));
+			}
+			.timeline {
+				--timeline-column: 8rem;
+				--timeline-gap: 2rem;
+				position: relative;
+			}
+			.timeline::before {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: calc(var(--timeline-column) + var(--timeline-gap) / 2);
+				width: 2px;
+				background: rgb(var(--gray-light));
+				content: '';
+			}
+			.timeline-endpoint {
+				position: absolute;
+				z-index: 1;
+				left: calc(var(--timeline-column) + var(--timeline-gap) / 2);
+				width: 18px;
+				height: 18px;
+				border: 3px solid var(--surface);
+				border-radius: 50%;
+				background: var(--accent);
+				box-sizing: border-box;
+			}
+			.timeline-endpoint--current {
+				top: 0;
+				transform: translate(-50%, -50%);
+			}
+			.timeline-endpoint--first {
+				bottom: 0;
+				transform: translate(-50%, 50%);
+			}
+			.timeline-label {
+				position: absolute;
+				right: calc(100% + var(--timeline-gap) / 2 + 0.75rem);
+				width: var(--timeline-column);
+				color: rgb(var(--gray));
+				text-align: right;
+				font-size: 0.85em;
+				line-height: 1.4;
+				white-space: nowrap;
+			}
+			.timeline-endpoint--current .timeline-label {
+				top: 50%;
+				transform: translateY(-50%);
+			}
+			.timeline-endpoint--first .timeline-label {
+				top: 50%;
+				transform: translateY(-50%);
+			}
+			ul {
+				position: relative;
+				display: flex;
+				flex-direction: column;
+				gap: var(--timeline-gap);
+				list-style-type: none;
+				margin: 0;
+				padding: 0;
+			}
+			ul li {
+				position: relative;
+				display: grid;
+				grid-template-columns: var(--timeline-column) minmax(0, 1fr);
+				gap: var(--timeline-gap);
+				align-items: start;
+			}
+			ul li::before {
+				position: absolute;
+				top: 1.5rem;
+				left: calc(var(--timeline-column) + var(--timeline-gap) / 2 - 6px);
+				width: 10px;
+				height: 10px;
+				border: 2px solid var(--surface);
+				border-radius: 50%;
+				background: var(--accent);
+				content: '';
+			}
+			.date {
+				margin: 1.25rem 0 0;
+				color: rgb(var(--gray));
+				text-align: right;
+				font-size: 0.9em;
+				line-height: 1.4;
+			}
+			.devlog-card {
+				display: block;
+				box-sizing: border-box;
+				padding: 1.25rem;
+				border: 1px solid rgb(var(--gray-light));
+				border-radius: 12px;
+				background-color: var(--surface);
+				box-shadow: 0 4px 16px rgba(var(--black), 0.08);
+				color: inherit;
+				text-decoration: none;
+			}
+			.devlog-card * {
+				text-decoration: none;
+				transition: 0.2s ease;
+			}
+			.devlog-card img {
+				margin-bottom: 0.5rem;
+				border-radius: 12px;
+			}
+			.title {
+				margin: 0;
+				color: rgb(var(--black));
+				line-height: 1;
+			}
+			.excerpt {
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				overflow: hidden;
+				margin: 0.5rem 0;
+				color: rgb(var(--gray-dark));
+			}
+			.author {
+				margin: 0;
+				color: rgb(var(--gray));
+			}
+			.devlog-card:hover .title {
+				color: rgb(var(--accent));
+			}
+			.devlog-card:hover img {
+				box-shadow: var(--box-shadow);
+			}
+			@media (max-width: 720px) {
+				.timeline {
+					--timeline-column: 5rem;
+					--timeline-gap: 1rem;
+				}
+				ul {
+					gap: 0.5em;
+				}
+				.date {
+					font-size: 0.75em;
+				}
+				.timeline-label {
+					font-size: 0.7em;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section>
+				<div class="intro">
+					<h1>Devlogs</h1>
+					<p>The devlogs for the different games I make, subsribe in the settings for notifications for new blogs.</p>
+					<hr />
+				</div>
+				<div class="timeline">
+					{
+						firstDevlogYear !== undefined && (
+							<>
+								<div class="timeline-endpoint timeline-endpoint--current">
+									<span class="timeline-label">
+										Now · <FormattedDate date={currentDate} />
+									</span>
+								</div>
+								<div class="timeline-endpoint timeline-endpoint--first">
+									<span class="timeline-label">Since · {firstDevlogYear}</span>
+								</div>
+							</>
+						)
+					}
+					<ul>
+						{
+							posts.map((post, index) => (
+								<li>
+									<time
+										class="date"
+										datetime={post.data.pubDate.toISOString()}
+										aria-hidden={
+											index > 0 &&
+											dateLabel(post.data.pubDate) === dateLabel(posts[index - 1].data.pubDate)
+										}
+									>
+										{(index === 0 ||
+											dateLabel(post.data.pubDate) !== dateLabel(posts[index - 1].data.pubDate)) && (
+											<FormattedDate date={post.data.pubDate} />
+										)}
+									</time>
+									<a class="devlog-card" href={`/devlog/${post.id}/`}>
+										{post.data.heroImage && (
+											<Image width={720} height={360} src={post.data.heroImage} alt="" />
+										)}
+										<h4 class="title">{post.data.title}</h4>
+										<p class="excerpt">
+											{post.body
+												.split(/\r?\n/)
+												.filter((line) => line.trim().length > 0)
+												.slice(0, 2)
+												.join(' ')}
+										</p>
+										{
+											post.data.author &&
+											authors.find((author) => author.id === post.data.author) && (
+												<p class="author">
+													{
+														authors.find((author) => author.id === post.data.author)?.data
+															.name
+													}
+												</p>
+											)
+										}
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
