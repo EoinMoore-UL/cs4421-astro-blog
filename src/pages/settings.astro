@@ -1,0 +1,160 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`Settings | ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>Settings</h1>
+			<p class="intro">A few options to make the site your own.</p>
+			<section class="setting">
+				<div>
+					<h2>Appearance</h2>
+					<p>Choose how the site looks.</p>
+				</div>
+				<label for="theme">Theme</label>
+				<select id="theme" name="theme">
+					<option value="system">System default</option>
+					<option value="light">Light</option>
+					<option value="dark">Dark</option>
+				</select>
+				<p class="save-status" id="theme-status" aria-live="polite"></p>
+			</section>
+			<section class="setting">
+				<div>
+					<h2>Notifications</h2>
+					<p>Get updates when new games are added. Email sign-ups aren't available yet.</p>
+				</div>
+				<label class="email-field" for="email">
+					<span>Email address</span>
+					<input
+						id="email"
+						name="email"
+						type="email"
+						autocomplete="email"
+						aria-describedby="email-note"
+						placeholder="you@example.com"
+					/>
+					<span class="email-note" id="email-note">
+						Your address won't be submitted or saved.
+					</span>
+				</label>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.intro {
+		margin: 0 0 2rem;
+		color: rgb(var(--gray));
+	}
+
+	.setting {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: 1rem;
+		align-items: center;
+		padding: 1.25rem 0;
+		border-bottom: 1px solid rgb(var(--gray-light));
+	}
+
+	.setting h2 {
+		margin: 0;
+		font-size: 1.25rem;
+	}
+
+	.setting p {
+		margin: 0.25rem 0 0;
+		color: rgb(var(--gray));
+		font-size: 0.9rem;
+	}
+
+	.setting > label[for='theme'] {
+		grid-column: 1;
+		font-size: 0.9rem;
+	}
+
+	select,
+	.email-field input {
+		grid-column: 2;
+		grid-row: 2;
+		min-width: 12rem;
+		padding: 0.5rem;
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 6px;
+		background: var(--surface);
+		color: rgb(var(--gray-dark));
+		font: inherit;
+		font-size: 0.9rem;
+	}
+
+	.email-field {
+		grid-column: 1 / -1;
+		display: grid;
+		gap: 0.5rem;
+		font-size: 0.9rem;
+	}
+
+	.email-field input {
+		grid-column: 1;
+		grid-row: auto;
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	.email-note,
+	.save-status {
+		color: rgb(var(--gray));
+		font-size: 0.8rem;
+	}
+
+	.save-status {
+		grid-column: 1 / -1;
+		margin: 0;
+	}
+
+	@media (max-width: 520px) {
+		.setting {
+			grid-template-columns: 1fr;
+		}
+
+		select {
+			grid-column: 1;
+			grid-row: auto;
+		}
+	}
+</style>
+
+<script>
+	const themeSelect = document.querySelector<HTMLSelectElement>('#theme');
+	const themeStatus = document.querySelector<HTMLElement>('#theme-status');
+
+	if (!themeSelect || !themeStatus) {
+		throw new Error('The theme setting controls could not be found.');
+	}
+
+	themeSelect.value = document.documentElement.dataset.theme ?? 'system';
+
+	themeSelect.addEventListener('change', () => {
+		const theme = themeSelect.value;
+		document.documentElement.dataset.theme = theme;
+
+		try {
+			localStorage.setItem('site-theme', theme);
+			themeStatus.textContent = 'Theme preference saved.';
+		} catch (error) {
+			console.error('Unable to save the theme preference.', error);
+			themeStatus.textContent = 'Theme changed, but your preference could not be saved.';
+		}
+	});
+</script>

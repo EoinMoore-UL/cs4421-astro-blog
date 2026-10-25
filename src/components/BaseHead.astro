@@ -32,6 +32,17 @@ const { title, description, image = FallbackImage } = Astro.props;
 />
 <meta name="generator" content={Astro.generator} />
 
+<script is:inline>
+	try {
+		const savedTheme = localStorage.getItem('site-theme');
+		document.documentElement.dataset.theme =
+			savedTheme === 'light' || savedTheme === 'dark' ? savedTheme : 'system';
+	} catch (error) {
+		console.warn('Unable to read the saved theme preference.', error);
+		document.documentElement.dataset.theme = 'system';
+	}
+</script>
+
 <Font cssVariable="--font-atkinson" preload />
 
 <!-- Canonical URL -->
