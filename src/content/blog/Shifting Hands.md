@@ -18,6 +18,9 @@ author: 'eóin'
 		style="width: min(960px, calc(100vw - 2rem)); height: auto; aspect-ratio: 640 / 380;"
 	></iframe>
 </div>
+<p>
+           
+</p>
 
 An old game made to test the Godot engine.
 
@@ -27,6 +30,6 @@ An old game made to test the Godot engine.
 		src="https://itch.io/embed/5189543" 
 		width="552" 
 		height="167"><a 
-		href="https://whyareallmyusernamestaken.itch.io/shifting-hands">Shifting Hands by 	WhyAreAllMyUserNamesTaken</a>
+		href="https://whyareallmyusernamestaken.itch.io/shifting-hands">Shifting Hands by WhyAreAllMyUserNamesTaken</a>
 	</iframe>
 </div>
