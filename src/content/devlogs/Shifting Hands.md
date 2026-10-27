@@ -1,7 +1,7 @@
 ---
 title: 'Shifting Sands'
 description: 'Shifting Sands'
-pubDate: 'Sep 10 2001'
+pubDate: 'Sep 10 2025'
 author: 'eóin'
 music: GMS.mp3
 ---

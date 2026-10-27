@@ -1,7 +1,7 @@
 ---
 title: 'Shifting Hands'
 description: 'Card Game'
-pubDate: 'Sep 10 2001'
+pubDate: 'Sep 10 2025'
 heroImage: '../../assets/shifing-hands.jpg'
 author: 'eóin'
 ---
@@ -9,16 +9,20 @@ author: 'eóin'
 <div style="width: 100vw; margin-left: calc(50% - 50vw); display: flex; justify-content: center;">
 	<iframe
 		frameborder="0"
-		src="https://itch.io/embed-upload/20050660?color=333333" 
+		src="/games/shifting-hands/Game/index.html"
 		allowfullscreen=""
+		allow="fullscreen"
+		title="Shifting Hands"
 		width="960"
 		height="570"
-		style="width: min(960x, calc(100vw - 2rem)); height: auto; aspect-ratio: 640 / 380;"
+		style="width: min(960px, calc(100vw - 2rem)); height: auto; aspect-ratio: 640 / 380;"
 	></iframe>
 </div>
 <p>
            
 </p>
+
+An old game made to test the Godot engine.
 
 <div style="display: flex; justify-content: center; width: 100%;">
 	<iframe 
