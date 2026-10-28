@@ -39,6 +39,8 @@ There's nothing special about `src/components/`, but that's where we like to put
 
 The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve game pages from `src/content/games/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
 
+Each game post must set a `game` frontmatter value matching its folder under `public/games/`. The game layout embeds `public/games/<game>/Game/index.html` automatically and the build checks that the file exists.
+
 Any static assets, like images, can be placed in the `public/` directory.
 
 ## 🧞 Commands

@@ -16,6 +16,7 @@ const games = defineCollection({
 			heroImage: z.optional(image()),
 			author: z.string().optional(),
 			music: z.string().optional(),
+			game: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
 		}),
 });
 
