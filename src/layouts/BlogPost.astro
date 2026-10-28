@@ -8,7 +8,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import MusicPlayer from '../components/MusicPlayer.astro';
 
-type Props = Omit<CollectionEntry<'blog'>['data'], 'author'> & {
+type Props = Omit<CollectionEntry<'games'>['data'], 'author'> & {
 	author?: CollectionEntry<'authors'>['data'];
 };
 
