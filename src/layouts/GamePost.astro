@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import AuthorProfile from '../components/AuthorProfile.astro';
@@ -8,11 +7,12 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import MusicPlayer from '../components/MusicPlayer.astro';
 
-type Props = Omit<CollectionEntry<'blog'>['data'], 'author'> & {
+type Props = Omit<CollectionEntry<'games'>['data'], 'author' | 'game'> & {
 	author?: CollectionEntry<'authors'>['data'];
+	game?: string;
 };
 
-const { title, description, pubDate, updatedDate, heroImage, author, music } = Astro.props;
+const { title, description, pubDate, updatedDate, author, music, game } = Astro.props;
 ---
 
 <html lang="en">
@@ -24,14 +24,16 @@ const { title, description, pubDate, updatedDate, heroImage, author, music } = A
 				max-width: 100%;
 				margin: 0;
 			}
-			.hero-image {
-				width: 100%;
+			.game-embed {
+				display: flex;
+				justify-content: center;
+				width: 100vw;
+				margin-left: calc(50% - 50vw);
 			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
+			.game-embed iframe {
+				width: min(960px, calc(100vw - 2rem));
+				height: auto;
+				aspect-ratio: 640 / 380;
 			}
 			.prose {
 				width: 720px;
@@ -63,9 +65,6 @@ const { title, description, pubDate, updatedDate, heroImage, author, music } = A
 		<Header />
 		<main>
 			<article>
-				<!-- <div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
-				</div> -->
 				<div class="prose">
 					<div class="title">
 						<div class="date">
@@ -82,6 +81,20 @@ const { title, description, pubDate, updatedDate, heroImage, author, music } = A
 						<hr />
 					</div>
 					{music && <MusicPlayer music={music} />}
+					{
+						game && (
+							<div class="game-embed">
+								<iframe
+									src={`/games/${game}/Game/index.html`}
+									title={title}
+									width="960"
+									height="570"
+									allowfullscreen
+									allow="fullscreen"
+								/>
+							</div>
+						)
+					}
 					<slot />
 					{author && <AuthorProfile author={author} />}
 				</div>

@@ -4,20 +4,8 @@ description: 'Tree With A Gun'
 pubDate: 'Oct 18 2026'
 heroImage: '../../assets/TWAG.jpg'
 author: 'eóin'
+game: 'twag'
 ---
-
-<div style="width: 100vw; margin-left: calc(50% - 50vw); display: flex; justify-content: center;">
-	<iframe
-		frameborder="0"
-		src="/games/twag/Game/index.html"
-		allowfullscreen=""
-		allow="fullscreen"
-		title="Tree With A Gun"
-		width="960"
-		height="570"
-		style="width: min(960px, calc(100vw - 2rem)); height: auto; aspect-ratio: 640 / 380;"
-	></iframe>
-</div>
 
 <div style="width: 100vw; margin-left: calc(50% - 50vw); display: flex; justify-content: center;">
 	<section

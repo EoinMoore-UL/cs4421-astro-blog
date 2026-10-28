@@ -1,0 +1,44 @@
+---
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import GamePost from '../../layouts/GamePost.astro';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('games');
+	const authors = await getCollection('authors');
+	return posts.map((post) => {
+		const gameEntryPoint = join(
+			process.cwd(),
+			'public',
+			'games',
+			post.data.game,
+			'Game',
+			'index.html',
+		);
+		if (!existsSync(gameEntryPoint)) {
+			throw new Error(
+				`Game "${post.data.game}" for "${post.data.title}" must have an entry point at public/games/${post.data.game}/Game/index.html`,
+			);
+		}
+
+		return {
+			params: { slug: post.id },
+			props: {
+				...post,
+				author: authors.find((author) => author.id === post.data.author)?.data,
+			},
+		};
+	});
+}
+type Props = CollectionEntry<'games'> & {
+	author?: CollectionEntry<'authors'>['data'];
+};
+
+const post = Astro.props;
+const { Content } = await render(post);
+---
+
+<GamePost {...post.data} author={post.author}>
+	<Content />
+</GamePost>
