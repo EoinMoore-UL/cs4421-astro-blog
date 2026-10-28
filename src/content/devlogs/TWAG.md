@@ -2,7 +2,7 @@
 title: 'TWAG'
 description: 'Tree With A Gun'
 pubDate: 'Oct 18 2026'
-author: 'eóin'
+author: 'cathal'
 music: CalmTwag.mp3
 ---
 A Game made by Eóin Moore for the UL GameDev Society Autumn gamejam.
