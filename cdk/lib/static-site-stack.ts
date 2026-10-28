@@ -31,6 +31,7 @@ function handler(event) {
     const distribution = new cloudfront.Distribution(this, 'SiteDistribution', {
       defaultBehavior: {
         origin: origins.S3BucketOrigin.withOriginAccessControl(siteBucket),
+        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         functionAssociations: [
           { function: rewriteFunction, eventType: cloudfront.FunctionEventType.VIEWER_REQUEST },
         ],
@@ -43,6 +44,10 @@ function handler(event) {
       destinationBucket: siteBucket,
       distribution,
       distributionPaths: ['/*'], // Automatic CloudFront CDN cache invalidation!
+    });
+
+    new cdk.CfnOutput(this, 'SiteUrl', {
+      value: `https://${distribution.distributionDomainName}`,
     });
   }
 }
