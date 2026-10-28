@@ -29,6 +29,18 @@
 	--surface: #151922;
 }
 
+:root[data-theme='sunset'] {
+	color-scheme: light;
+	--accent: #b83227;
+	--accent-dark: #7f1d1d;
+	--black: 74, 31, 20;
+	--gray: 137, 91, 62;
+	--gray-light: 248, 224, 172;
+	--gray-dark: 92, 48, 25;
+	--gray-gradient: rgba(var(--gray-light), 55%), #fff5dc;
+	--surface: #fffaf0;
+}
+
 @media (prefers-color-scheme: dark) {
 	:root[data-theme='system'] {
 		--accent: #9eafff;
